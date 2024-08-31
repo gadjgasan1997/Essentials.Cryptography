@@ -19,4 +19,9 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Essentials.Cryptography" Version="1.0.0" />
+      <PackageReference Include="Moq" Version="4.20.70" />
+    </ItemGroup>
+
 </Project>
