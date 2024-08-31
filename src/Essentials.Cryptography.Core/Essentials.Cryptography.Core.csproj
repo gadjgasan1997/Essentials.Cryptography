@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Essentials.Cryptography</RootNamespace>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PackageId>Essentials.Cryptography</PackageId>
+        <Version>1.0.0.0</Version>
+        <Authors>Gadzhinskiy</Authors>
+        <Company>Gadzhinskiy</Company>
+        <Product>Essentials.Cryptography</Product>
+        <Description>
+            Клиент для работы с криптографией
+        </Description>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="BouncyCastle.NetCore" Version="2.2.1" />
+      <PackageReference Include="Essentials.Configuration" Version="1.2.3" />
+      <PackageReference Include="Essentials.Functional" Version="1.1.1" />
+    </ItemGroup>
+
+</Project>

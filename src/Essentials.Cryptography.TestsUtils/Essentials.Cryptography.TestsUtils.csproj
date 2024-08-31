@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Essentials.Cryptography.TestsUtils</RootNamespace>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PackageId>Essentials.Cryptography.TestsUtils</PackageId>
+        <Version>1.0.0.0</Version>
+        <Authors>Gadzhinskiy</Authors>
+        <Company>Gadzhinskiy</Company>
+        <Product>Essentials.Cryptography.TestsUtils</Product>
+        <Description>
+            Утилиты для клиента по работе с криптографией
+        </Description>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+</Project>

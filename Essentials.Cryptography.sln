@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{303217FB-43B7-459E-98E0-9EEFB11A7673}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solutionItems", "solutionItems", "{98FDE889-A84B-4B5B-808B-E18BFF6DEECD}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		nuget.config = nuget.config
+		README.md = README.md
+		.idea\.idea.Essentials.Cryptography\.idea\workspace.xml = .idea\.idea.Essentials.Cryptography\.idea\workspace.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "publish", "publish", "{42FA9766-A898-4DF9-A872-E09414E38417}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Essentials.Cryptography.Core", "Essentials.Cryptography.Core", "{492B4281-6C08-4EDB-B1B4-4405C0CE8485}"
+	ProjectSection(SolutionItems) = preProject
+		publish\Essentials.Cryptography.Core\publish.cmd = publish\Essentials.Cryptography.Core\publish.cmd
+		publish\Essentials.Cryptography.Core\settings.cmd = publish\Essentials.Cryptography.Core\settings.cmd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Essentials.Cryptography.TestsUtils", "Essentials.Cryptography.TestsUtils", "{2BD3FEA6-E88F-44E8-84DD-C69C0BC6BA62}"
+	ProjectSection(SolutionItems) = preProject
+		publish\Essentials.Cryptography.TestsUtils\publish.cmd = publish\Essentials.Cryptography.TestsUtils\publish.cmd
+		publish\Essentials.Cryptography.TestsUtils\settings.cmd = publish\Essentials.Cryptography.TestsUtils\settings.cmd
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essentials.Cryptography.Core", "src\Essentials.Cryptography.Core\Essentials.Cryptography.Core.csproj", "{1EACE802-9A6A-4A1B-B0D4-DFF070B617A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essentials.Cryptography.TestsUtils", "src\Essentials.Cryptography.TestsUtils\Essentials.Cryptography.TestsUtils.csproj", "{D8A798DA-999B-4509-BFFD-A63237E2C685}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{492B4281-6C08-4EDB-B1B4-4405C0CE8485} = {42FA9766-A898-4DF9-A872-E09414E38417}
+		{2BD3FEA6-E88F-44E8-84DD-C69C0BC6BA62} = {42FA9766-A898-4DF9-A872-E09414E38417}
+		{1EACE802-9A6A-4A1B-B0D4-DFF070B617A9} = {303217FB-43B7-459E-98E0-9EEFB11A7673}
+		{D8A798DA-999B-4509-BFFD-A63237E2C685} = {303217FB-43B7-459E-98E0-9EEFB11A7673}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1EACE802-9A6A-4A1B-B0D4-DFF070B617A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EACE802-9A6A-4A1B-B0D4-DFF070B617A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EACE802-9A6A-4A1B-B0D4-DFF070B617A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EACE802-9A6A-4A1B-B0D4-DFF070B617A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8A798DA-999B-4509-BFFD-A63237E2C685}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8A798DA-999B-4509-BFFD-A63237E2C685}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8A798DA-999B-4509-BFFD-A63237E2C685}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8A798DA-999B-4509-BFFD-A63237E2C685}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
