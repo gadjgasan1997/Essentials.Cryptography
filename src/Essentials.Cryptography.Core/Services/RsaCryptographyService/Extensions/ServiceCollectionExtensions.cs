@@ -22,8 +22,9 @@ public static class ServiceCollectionExtensions
         var section = configuration
             .GetSection(KnownSections.CRYPTOGRAPHY)
             .GetSection(RsaCryptographyOptions.Section);
-        
+
         services.Configure<RsaCryptographyOptions>(section);
+        services.AddHostedService<WarmKeysPoolService>();
         
         services.AddSingleton<KeysPool>();
         services.AddSingleton<IRsaCryptographyService, Implementations.RsaCryptographyService>();

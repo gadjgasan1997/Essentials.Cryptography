@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using System.Collections.Concurrent;
 using Essentials.Cryptography.Services.RsaCryptographyService.Options;
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
 namespace Essentials.Cryptography.Services.RsaCryptographyService;
 
@@ -40,20 +41,28 @@ internal class KeysPool
     }
     
     /// <summary>
+    /// Прогревает пул
+    /// </summary>
+    /// <param name="strength">Стойкость</param>
+    /// <param name="keysFactory">Фабрика создания пары ключей</param>
+    public async Task WarmPoolAsync(int strength, Func<Task<(string, string)>> keysFactory) =>
+        await RunGenerateKeysTask(strength, keysFactory);
+    
+    /// <summary>
     /// Запускает задачу по генерации ключей для пула
     /// </summary>
     /// <param name="strength">Стойкость</param>
     /// <param name="keysFactory">Фабрика создания пары ключей</param>
-    private void RunGenerateKeysTask(int strength, Func<Task<(string, string)>> keysFactory)
+    private Task RunGenerateKeysTask(int strength, Func<Task<(string, string)>> keysFactory)
     {
         var bag = _keys.GetOrAdd(strength, _ => []);
         if (!bag.TryGetNonEnumeratedCount(out var count))
-            return;
+            return Task.CompletedTask;
         
         if (Interlocked.Exchange(ref _isExecuted, 1) == 1)
-            return;
+            return Task.CompletedTask;
         
-        Task.Run(async () =>
+        return Task.Run(async () =>
         {
             await Parallel.ForEachAsync(
                 source: Enumerable.Range(1, _options.PoolSize - count),

@@ -1,4 +1,5 @@
-﻿namespace Essentials.Cryptography.Services.RsaCryptographyService.Options;
+﻿// ReSharper disable CollectionNeverUpdated.Global
+namespace Essentials.Cryptography.Services.RsaCryptographyService.Options;
 
 /// <summary>
 /// Опции пула
@@ -14,4 +15,9 @@ internal class PoolOptions
     /// Размер пула
     /// </summary>
     public int PoolSize { get; init; } = 30;
+    
+    /// <summary>
+    /// Список размеров ключей для прогрева
+    /// </summary>
+    public HashSet<int> KeysSizesToWarm { get; init; } = [];
 }

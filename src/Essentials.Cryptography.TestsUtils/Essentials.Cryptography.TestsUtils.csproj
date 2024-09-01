@@ -9,7 +9,7 @@
 
     <PropertyGroup>
         <PackageId>Essentials.Cryptography.TestsUtils</PackageId>
-        <Version>1.0.0.0</Version>
+        <Version>1.1.1.0</Version>
         <Authors>Gadzhinskiy</Authors>
         <Company>Gadzhinskiy</Company>
         <Product>Essentials.Cryptography.TestsUtils</Product>
@@ -20,7 +20,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Essentials.Cryptography" Version="1.0.0" />
+      <PackageReference Include="Essentials.Cryptography" Version="1.2.1" />
       <PackageReference Include="Moq" Version="4.20.70" />
     </ItemGroup>
 
