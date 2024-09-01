@@ -9,14 +9,9 @@ internal class RsaCryptographyOptions
     /// Название секции в конфигурации
     /// </summary>
     public static string Section => "Rsa";
-
+    
     /// <summary>
-    /// Признак необходимости использовать пул ключей
+    /// Опции пула
     /// </summary>
-    public bool UsePool { get; init; } = true;
-
-    /// <summary>
-    /// Размер пула
-    /// </summary>
-    public int PoolSize { get; init; } = 100;
+    public PoolOptions PoolOptions { get; init; } = new();
 }

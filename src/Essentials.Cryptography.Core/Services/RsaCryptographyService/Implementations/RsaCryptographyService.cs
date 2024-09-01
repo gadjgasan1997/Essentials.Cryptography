@@ -1,55 +1,38 @@
 ﻿using LanguageExt;
 using LanguageExt.Common;
 using System.Text;
-using System.Collections.Concurrent;
 using System.Security.Cryptography;
 using Microsoft.Extensions.Options;
-using Org.BouncyCastle.Security;
-using Org.BouncyCastle.OpenSsl;
-using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Generators;
-using Essentials.Utils.Extensions;
+using Essentials.Cryptography.Services.RsaCryptographyService.Extensions;
 using Essentials.Cryptography.Services.RsaCryptographyService.Options;
+// ReSharper disable ConvertToLambdaExpression
 
 namespace Essentials.Cryptography.Services.RsaCryptographyService.Implementations;
 
 /// <inheritdoc cref="IRsaCryptographyService" />
 internal class RsaCryptographyService : IRsaCryptographyService
 {
-    private static uint _isExecuted;
-    private readonly IOptions<RsaCryptographyOptions> _options;
-    private static readonly ConcurrentBag<(string, string)> _keys = new();
+    private readonly KeysPool _keysPool;
+    private readonly PoolOptions _options;
     
-    public RsaCryptographyService(IOptions<RsaCryptographyOptions> options)
+    public RsaCryptographyService(
+        KeysPool keysPool,
+        IOptions<RsaCryptographyOptions> options)
     {
-        _options = options;
+        _keysPool = keysPool;
+        _options = options.Value.PoolOptions;
     }
     
     /// <inheritdoc cref="IRsaCryptographyService.GenerateKeyPairAsync" />
     public async Task<Validation<Error, (string PrivateKey, string PublicKey)>> GenerateKeyPairAsync(
         int strength)
     {
-        if (_options.Value.UsePool && _keys.TryTake(out var keys))
-        {
-            if (_keys.TryGetNonEnumeratedCount(out var count) && count <= 1)
-                RunGenerateKeysTask(strength);
-            
-            return (PrivateKey: keys.Item1, PublicKey: keys.Item2);
-        }
-        
+        if (_options.UsePool)
+            return await _keysPool.TakeAsync(strength, GenerateKeysAsync);
+
         return await Prelude
-            .TryAsync(async () =>
-            {
-                var pair = CreateRsaKeyPair(strength);
-                return await (RunGetStringFromKeyTask(pair.Private), RunGetStringFromKeyTask(pair.Public));
-            })
-            .Map(tuple =>
-            {
-                if (_options.Value.UsePool)
-                    RunGenerateKeysTask(strength);
-                
-                return tuple;
-            })
+            .TryAsync(GenerateKeysAsync)
             .ToValidation(
                 Fail: exception =>
                 {
@@ -57,6 +40,9 @@ internal class RsaCryptographyService : IRsaCryptographyService
                         "Во время создания пары из публичного и приватного ключа произошла ошибка",
                         exception);
                 });
+
+        async Task<(string, string)> GenerateKeysAsync() =>
+            await new RsaKeyPairGenerator().CreateRsaKeyPairAsync(strength);
     }
 
     /// <inheritdoc cref="IRsaCryptographyService.Decrypt" />
@@ -84,62 +70,5 @@ internal class RsaCryptographyService : IRsaCryptographyService
                         $"Во время расшифровки строки '{encryptedString}' произошла ошибка",
                         exception);
                 });
-    }
-    
-    /// <summary>
-    /// Запускает задачу по генерации ключей для пула
-    /// </summary>
-    private void RunGenerateKeysTask(int strength)
-    {
-        if (!_keys.TryGetNonEnumeratedCount(out var count))
-            return;
-        
-        if (Interlocked.Exchange(ref _isExecuted, 1) == 1)
-            return;
-        
-        Task.Run(async () =>
-        {
-            await Parallel.ForEachAsync(
-                source: Enumerable.Range(1, _options.Value.PoolSize - count),
-                body: async (_, _) =>
-                {
-                    var pair = CreateRsaKeyPair(strength);
-                    var tuple = await (RunGetStringFromKeyTask(pair.Private), RunGetStringFromKeyTask(pair.Public));
-                    
-                    _keys.Add(tuple);
-                });
-            
-            Interlocked.Exchange(ref _isExecuted, 0);
-        });
-    }
-    
-    /// <summary>
-    /// Создает пару из приватного и публичного ключа
-    /// </summary>
-    /// <returns></returns>
-    private static AsymmetricCipherKeyPair CreateRsaKeyPair(int strength)
-    {
-        var generator = new RsaKeyPairGenerator();
-        generator.Init(new KeyGenerationParameters(new SecureRandom(), strength));
-        return generator.GenerateKeyPair();
-    }
-
-    /// <summary>
-    /// Запускает и возвращает задачу на получение строки из объекта ключа
-    /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
-    private static Task<string> RunGetStringFromKeyTask(AsymmetricKeyParameter key)
-    {
-        return Task.Run(async () =>
-        {
-            await using var textWriter = new StringWriter();
-            
-            using var pemWriter = new PemWriter(textWriter);
-            pemWriter.WriteObject(key);
-            await pemWriter.Writer.FlushAsync();
-            
-            return textWriter.ToString();
-        });
     }
 }

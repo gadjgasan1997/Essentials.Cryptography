@@ -24,6 +24,8 @@ public static class ServiceCollectionExtensions
             .GetSection(RsaCryptographyOptions.Section);
         
         services.Configure<RsaCryptographyOptions>(section);
+        
+        services.AddSingleton<KeysPool>();
         services.AddSingleton<IRsaCryptographyService, Implementations.RsaCryptographyService>();
         
         return services;
